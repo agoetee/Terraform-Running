@@ -57,3 +57,21 @@ Outputs:
 puplic_ip = "54.158.54.148"
 
 ```
+
+### Launch Configuration with Autoscaling Group
+
+To create an AutoScaling Group(ASG), there is the need of a Launch configuration that specifies how to configure the EC2 instances in the ASG. 
+Launch configurations are __immutable__ (once instance is created, it cannot be changed or modified directly. 
+Change be made by creating a new Launch configuration).
+Therefore if there is a change in the launch config, Terraform will try to replace/delete it. 
+Because the ASG refernces the old resource, it will not be able to delete it.
+
+This problem is solved with the __lifecycle__ setting.
+
+```js
+ lifecycle {
+    create_before_destroy = true
+  }
+``` 
+
+[Launch Config with Autoscaling Group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_configuration)
